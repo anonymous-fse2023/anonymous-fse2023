@@ -8,22 +8,22 @@ clobber: clean;
 results:; mkdir -p results
 
 box-hash:
-	md5sum bfuzzer.box
+	md5sum decoder.box
 
-box-add: #| bfuzzer.box
-	-vagrant destroy $$(vagrant global-status | grep bfuzzer | sed -e 's# .*##g')
-	rm -rf vtest && mkdir -p vtest && cp bfuzzer.box vtest
-	cd vtest && vagrant box add bfuzzer ./bfuzzer.box
-	cd vtest && vagrant init bfuzzer
+box-add: #| decoder.box
+	-vagrant destroy $$(vagrant global-status | grep decoder | sed -e 's# .*##g')
+	rm -rf vtest && mkdir -p vtest && cp decoder.box vtest
+	cd vtest && vagrant box add decoder ./decoder.box
+	cd vtest && vagrant init decoder
 	cd vtest && vagrant up
 
 box-status:
-	vagrant global-status | grep bfuzzer
-	vagrant box list | grep bfuzzer
+	vagrant global-status | grep decoder
+	vagrant box list | grep decoder
 
 box-remove:
-	-vagrant destroy $$(vagrant global-status | grep bfuzzer | sed -e 's# .*##g')
-	vagrant box remove bfuzzer
+	-vagrant destroy $$(vagrant global-status | grep decoder | sed -e 's# .*##g')
+	vagrant box remove decoder
 
 show-ports:
 	 sudo netstat -ln --program | grep 8888

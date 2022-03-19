@@ -1,58 +1,77 @@
-The notebook can be viewed [here](https://nbviewer.org/github/anonymous-icst-2022/anonymous-icst-2022/blob/main/Decoder.ipynb).
+# Playground
 
-This is the replication package of Decoder experiments.
-Decoder is a black-box fuzzer that generates syntactically valid program inputs using failure feedback.
+We have setup a completely in-browser playground for exploring the algorithm and examples [here](https://anonymous-fse2022.github.io/anonymous-fse2022/playground/lab?path=decoder.ipynb).
 
-In this experiment, we test and compare two fuzzers: Decoder and pfuzzer. Both fuzzers are run on 5 target programs.
-
-## Virtual Machine
-To reproduce the experiments, download the box file located [here](https://figshare.com/s/1aed02f8caf73072873f). 
+# Virtual Machine
+To reproduce the experiments, download the vagrant box file located [here](https://doi.org/10.5281/zenodo.6461698). 
 
 VM specs are:
-* CPU: 2 cores minimum.
-* RAM: 4 GB 
+* CPU: 8 cores
+* RAM: 15 GB 
 * Swap: 1 GB
+* Disk: 96 GB
 
-To startup the VM, go into the directory where bfuzzer.box and Makefile are stored. Run the following command:
+## VM File structure:
 
-    make box-add
+* **afl**: Contains all afl experiments, including both waypoints and dumb mode.
+* **pfuzzer**: Contains all pfuzzer experiment files.
+* **decoder**: Contains decoder experiment files for subjects ini, csv, json, tinyc, and mjs.
+* **ppdecoder**: Contains decoder experiment files for pyparser subjects.
+* **results**: Stores experiment results for all runs for decoder, pfuzzer, and afl.
 
-Connect to VM via:
+## Launching the VM:
 
-    make box-connect2
+In the same directory where you downloaded the box file and the Makefile. Run the following command:
+```bash
+make box-add
+```
 
-To run all experiments 10 times, do:
+The command will take some time to complete. Next, connect to the new virtual machine:
+```bash
+make box-connect2
+```
 
-    make run_all
+## Running experiments:
 
-To run pfuzzer one time for 1 hour do:
+After strating the vitual machine and once you are in the home directory, you can start executing the experiments.
 
-    make run_pfuzzer
+* To run decoder experiments on pyparser subjects for one hour, run:
+```bash
+make run_ppdecoder RUNTIME=1
+```
 
-To run bfuzzer one time for 1 hour do:
+* To run decoder experiments on C subjects, 10 runs, with each run lasting 1 hour:
+```bash
+make decoder RUNTIME=1 R=10
+```
 
-    make run_bfuzzer
+* To run pfuzzer experiments on C subjects, 10 runs, with each run lasting 1 hour:
+```bash
+make pfuzzer RUNTIME=1 R=10
+```
 
-Evaluation results for pfuzzer can be found under the folder: `chains/src/pfuzzer/samples`
+* To run AFL with Waypoints, 10 runs, with each run lasting 1 hour:
+```bash
+make afl-wp RUNTIME=1 R=10
+```
 
-Evaluation results for bfuzzer can be found under the folder: `chains/src/bfuzzer/examples`
+* To run plain uninstrumented AFL, 10 runs, with each run lasting 1 hour:
+```bash
+make afl-dm RUNTIME=1 R=10
+```
 
-For example, evaluation results for bfuzzer experiment on mjs can be found under the folder: `chains/src/bfuzzer/examples/mjs`
+* To extract and display evaluation results table, run:
+```bash
+python3 show_table_*.py
+```
 
-Bfuzzer results include:
-`inputs.json`: Generated inputs in json format.
-`inputs.txt`: generated inputs in chronological order.
-`times.txt`: Cummulative time, where each time stamp corresponds to an input generation.
-`coverage.txt`: Cummulative branch coverage, each coverage number corresponds to the cummulative coverage at a given input.
-`coverage.html`: Total coverage achieved.
+* Table numbers correspond to table numbers in the paper. For example to show replication results in Table 2, run:
+```bash
+python3 show_table_2.py
+```
 
-## Jupyter Notebook
-Another way to run the experiment is through the Jupyter notebook file `PBFuzzer.ipynb`
-Once in the VM home directory, run the following command to start Jupyter notebook:
 
-    ./startjupyter.sh &
+**Note**: Running all the experiments may take 3 to 4 days. Therefore, it can be useful to run experiments in steps, as shown by the commands above.
 
-To reproduce the coverage graphs, make sure you have packages `setuptools` and `plotnine` installed. If not, then install them first:
+**Note**: Running one run experiment for one hour will take roughly 2 hours to complete. The user needs to account for the additional execution time of evaluation and compilation scripts.
 
-    pip3 install --upgrade setuptools
-    pip3 install plotnine
