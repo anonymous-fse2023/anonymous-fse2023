@@ -1,6 +1,6 @@
 # Playground
 
-We have setup a completely in-browser playground for exploring the algorithm and examples [here](https://anonymous-fse2022.github.io/anonymous-fse2022/playground/lab?path=decoder.ipynb).
+We have setup a completely in-browser playground for exploring the algorithm and examples [here](https://anonymous-fse2023.github.io/anonymous-fse2023/playground/lab?path=decoder.ipynb).
 
 # Virtual Machine
 To reproduce the experiments, download the vagrant box file located [here](https://doi.org/10.5281/zenodo.6461698). 
